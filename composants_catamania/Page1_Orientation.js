@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { AppRegistry, Text, View, TextInput, Switch, StyleSheet } from 'react-native';
 import moment from 'moment';
 import 'moment/locale/fr';
-import { StandardText } from './StandardText';
-import { TitleText } from './TitleText';
-import { normalize } from './Scaling'
+import { StandardText } from './common/StandardText';
+import { TitleText } from './common/TitleText';
+import { normalize } from './common/Scaling'
 
 /*
 Métier : première page de l'application...

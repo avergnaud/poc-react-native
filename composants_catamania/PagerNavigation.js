@@ -16,9 +16,9 @@ import { Page2_Apprentissage } from './Page2_Apprentissage';
 import { Page3_AttentionEtCalcul } from './Page3_AttentionEtCalcul';
 import { Page4_Rappel } from './Page4_Rappel';
 import { Page5_Langage } from './Page5_Langage';
-import { BoutonNavigation } from './BoutonNavigation';
-import { BarreProgression } from './BarreProgression';
-import { normalize } from './Scaling'
+import { BoutonNavigation } from './common/BoutonNavigation';
+import { BarreProgression } from './common/BarreProgression';
+import { normalize } from './common/Scaling'
 
 /*
 Point d'entrée dans l'application - affichage de pages dans un pager
