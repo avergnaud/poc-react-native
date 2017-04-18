@@ -5,9 +5,12 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from 'react-native';
-
+import { normalize } from './Scaling'
 import LinearGradient from 'react-native-linear-gradient';
 
+/*
+Boutons précédent et suivant
+*/
 export class BoutonNavigation extends Component {
   _handlePress = () => {
     if (this.props.enabled && this.props.onPress) {
@@ -32,21 +35,21 @@ export class BoutonNavigation extends Component {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 150,
-    height: 46,
+    width: normalize(150),
+    height: normalize(50),
   },
     linearGradient: {
       flex: 1,
-      paddingLeft: 15,
-      paddingRight: 15,
+      paddingLeft: normalize(15),
+      paddingRight: normalize(15),
       borderRadius: 5,
       borderColor: '#245580',
     },
     buttonText: {
-      fontSize: 18,
+      fontSize: normalize(18),
       fontFamily: 'Gill Sans',
       textAlign: 'center',
-      margin: 10,
+      margin: normalize(10),
       color: '#ffffff',
       backgroundColor: 'transparent',
     },

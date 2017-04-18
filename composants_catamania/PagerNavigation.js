@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
   ViewPagerAndroid,
-  Button
+  Button,
+  Dimensions
 } from 'react-native';
-
 import type { ViewPagerScrollState } from 'ViewPagerAndroid';
 import { Page1_Orientation } from './Page1_Orientation';
 import { Page2_Apprentissage } from './Page2_Apprentissage';
@@ -18,86 +18,58 @@ import { Page4_Rappel } from './Page4_Rappel';
 import { Page5_Langage } from './Page5_Langage';
 import { BoutonNavigation } from './BoutonNavigation';
 import { BarreProgression } from './BarreProgression';
+import { normalize } from './Scaling'
 
-var PAGES = 5;
-
-class MyProgressBar extends React.Component {
-  render() {
-    var fractionalPosition = (this.props.progress.position + this.props.progress.offset);
-    var progressBarSize = (fractionalPosition / (PAGES - 1)) * this.props.size;
-    return (
-      <View style={[styles.progressBarContainer, {width: this.props.size}]}>
-        <View style={[styles.progressBar, {width: progressBarSize}]}/>
-      </View>
-    );
-  }
-}
-
+/*
+Point d'entrée dans l'application - affichage de pages dans un pager
+*/
 export class PagerNavigation extends Component {
-  static title = '<ViewPagerAndroid>';
-    static description = 'Container that allows to flip left and right between child views.';
 
     state = {
+      /* page courante */
       page: 0,
+      /* progression dans le pager */
       progress: {
-        position: 0,
-        offset: 0,
+        position: 0
       },
     };
 
+    /* méthodes appelées par le ViewPagerAndroid */
     onPageSelected = (e) => {
       this.setState({page: e.nativeEvent.position});
     };
-
     onPageScroll = (e) => {
       this.setState({progress: e.nativeEvent});
     };
-
     onPageScrollStateChanged = (state : ViewPagerScrollState) => {
       this.setState({scrollState: state});
     };
 
+    /* appelé par le BoutonNavigation */
     move = (delta) => {
       var page = this.state.page + delta;
-      this.go(page);
-    };
-
-    go = (page) => {
       this.viewPager.setPage(page);
-
       this.setState({page});
     };
 
+    /*
+    Affichage du composant
+    */
     render() {
-      var pages = [];
-      pages.push(
-        <View key={0} collapsable={false}>
-          <Page1_Orientation />
-        </View>
-      );
-      pages.push(
-        <View key={1} collapsable={false}>
-          <Page2_Apprentissage />
-        </View>
-      );
-      pages.push(
-        <View key={2} collapsable={false}>
-          <Page3_AttentionEtCalcul />
-        </View>
-      );
-      pages.push(
-        <View key={3} collapsable={false}>
-          <Page4_Rappel />
-        </View>
-      );
-      pages.push(
-        <View key={4} collapsable={false}>
-          <Page5_Langage />
-        </View>
-      );
-      var { page } = this.state;
+      const PAGES = 5;
+      let pages = [];
+
+      /* 5 pages dans le pager */
+      pages.push(<View key={0} collapsable={false}><Page1_Orientation /></View>);
+      pages.push(<View key={1} collapsable={false}><Page2_Apprentissage /></View>);
+      pages.push(<View key={2} collapsable={false}><Page3_AttentionEtCalcul /></View>);
+      pages.push(<View key={3} collapsable={false}><Page4_Rappel /></View>);
+      pages.push(<View key={4} collapsable={false}><Page5_Langage /></View>);
+
+      let { page } = this.state;
       return (
-        <View style={styles.container}>
+        <View style={styles.containerGlobal}>
+          {/* Le pager */}
           <ViewPagerAndroid
             style={styles.viewPager}
             initialPage={0}
@@ -110,19 +82,20 @@ export class PagerNavigation extends Component {
             {pages}
           </ViewPagerAndroid>
 
+          {/* Boutons de navigation */}
           <View style={styles.buttons}>
             <BoutonNavigation text="Précédent" enabled={page > 0} onPress={() => this.move(-1)}/>
             <BoutonNavigation text="Suivant" enabled={page < PAGES - 1} onPress={() => this.move(1)}/>
           </View>
 
+          {/* Barre de progression */}
           <View style={styles.progress}>
             <Text style={styles.progressPageText}>{page + 1} / {PAGES}</Text>
             <BarreProgression
-              size={200}
-              progress={this.state.progress}
+              size={normalize(400)}
+              pageCourante={page + 1}
               pages={PAGES}
             />
-            {/* AdroidProgressBar ? */}
           </View>
 
         </View>
@@ -133,48 +106,33 @@ export class PagerNavigation extends Component {
 const styles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
-    height: 60,
+    height: normalize(60),
     alignItems: 'center',
     justifyContent: 'space-around',
   },
     progress: {
       flexDirection: 'row',
-      height: 40,
+      height: normalize(60),
       alignItems: 'center',
       justifyContent: 'center',
     },
-  button: {
-    flexDirection: 'row',
-    backgroundColor: 'red',
-    padding: 8,
-    borderRadius: 6,
-    justifyContent: 'center',
-    width: 130,
-    height: 40
-  },
   myButtonText: {
-    fontSize: 18,
+    fontSize: normalize(18),
     color: 'white'
   },
   buttonDisabled: {
     opacity: 0.5,
   },
   progressPageText: {
-    fontFamily: 'Gill Sans',
-    fontSize: 16,
-    color: 'black'
+    fontSize: normalize(18),
   },
   scrollStateText: {
     color: '#99d1b7',
   },
-  container: {
+  containerGlobal: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  image: {
-    width: 300,
-    height: 200,
-    padding: 20,
+    padding: normalize(50),
   },
   viewPager: {
     flex: 1,

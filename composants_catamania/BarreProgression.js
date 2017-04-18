@@ -5,16 +5,17 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from 'react-native';
-
+import { normalize } from './Scaling'
 import LinearGradient from 'react-native-linear-gradient';
 
+/*
+Affichée en bas du pager
+*/
 export class BarreProgression extends Component {
   render() {
-    var fractionalPosition = (this.props.progress.position + this.props.progress.offset);
-    var progressBarSize = (fractionalPosition / (this.props.pages - 1)) * this.props.size;
+    var progressBarSize = (this.props.pageCourante / (this.props.pages)) * this.props.size;
     return (
       <View style={[styles.progressBarContainer, {width: this.props.size}]}>
-          <Text>{this.props.progress.position} {this.props.progress.offset} -- {fractionalPosition} / {this.props.pages - 1} * {this.props.size}</Text>
           <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={[styles.linearGradient, {width: progressBarSize}]}>
           </LinearGradient>
       </View>
@@ -24,9 +25,9 @@ export class BarreProgression extends Component {
 
 const styles = StyleSheet.create({
   progressBarContainer: {
-    height: 25,
-    margin: 10,
-    borderRadius: 4,
+    height: normalize(25),
+    margin: normalize(10),
+    borderRadius: normalize(4),
     backgroundColor: '#f5f5f5'
   },
     linearGradient: {
