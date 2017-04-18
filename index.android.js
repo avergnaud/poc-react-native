@@ -27,4 +27,10 @@ export default class airpm extends Component {
   }
 }
 
+const styles = StyleSheet.create({
+  wrapperView: {
+
+  }
+});
+
 AppRegistry.registerComponent('airpm', () => airpm);
